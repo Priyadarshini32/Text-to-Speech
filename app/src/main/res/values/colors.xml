@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors -->
+    <color name="primary">#4285F4</color>        <!-- Google Blue -->
+    <color name="primary_dark">#3367D6</color>   <!-- Darker shade for status bar -->
+    <color name="primary_light">#A0C3FF</color>  <!-- Lighter shade for highlights -->
+
+    <!-- Secondary colors -->
+    <color name="accent">#FBBC05</color>         <!-- Amber yellow for accents -->
+    <color name="secondary">#34A853</color>      <!-- Green for positive actions -->
+    <color name="tertiary">#EA4335</color>       <!-- Red for negative/clear actions -->
+
+    <!-- Background colors -->
+    <color name="background">#F8F9FA</color>     <!-- Light background -->
+    <color name="card_background">#FFFFFF</color><!-- White for cards -->
+    <color name="input_background">#EFF3FF</color><!-- Light blue for input fields -->
+
+    <!-- Text colors -->
+    <color name="text_primary">#202124</color>   <!-- Dark gray for primary text -->
+    <color name="text_secondary">#5F6368</color> <!-- Medium gray for secondary text -->
+    <color name="text_tertiary">#9AA0A6</color>  <!-- Light gray for hints/placeholders -->
+    <color name="text_on_primary">#FFFFFF</color><!-- White text on primary color -->
+    <color name="text_on_secondary">#FFFFFF</color><!-- White text on secondary colors -->
+
+    <!-- Other UI elements -->
+    <color name="divider">#DADCE0</color>        <!-- Light gray for dividers -->
+    <color name="ripple">#E8F0FE</color>         <!-- Light blue for ripple effects -->
+</resources>
