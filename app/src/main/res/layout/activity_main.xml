@@ -35,21 +35,21 @@
         <EditText
             android:id="@+id/editTextInput"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="195dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_background"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:fontFamily="@font/acme"
             android:gravity="top|start"
             android:hint="Enter text to speak"
             android:inputType="textMultiLine"
-            android:padding="12dp"
-            android:textColor="#FBFBFB"
-            android:textColorHint="@color/text_tertiary"
             android:maxLines="10"
-            android:scrollbars="vertical"
             android:overScrollMode="always"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            android:padding="12dp"
+            android:scrollbars="vertical"
+            android:textColor="#FBFBFB"
+            android:textColorHint="@color/text_tertiary" />
 
 
         <TextView
