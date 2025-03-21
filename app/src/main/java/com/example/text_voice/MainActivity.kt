@@ -2,6 +2,7 @@ package com.example.text_voice
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -22,6 +23,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.text_voice.databinding.ActivityMainBinding
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -40,6 +45,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private val MAX_CHARACTER_LIMIT = 1000
     private var selectedVoiceIndex = 0
     private var availableVoices = mutableListOf<Voice>()
+
+    // Translation properties
+    private var translators = mutableMapOf<String, Translator>()
+    private val supportedLanguages = mapOf(
+        "English" to TranslateLanguage.ENGLISH,
+        "Spanish" to TranslateLanguage.SPANISH,
+        "French" to TranslateLanguage.FRENCH,
+        "German" to TranslateLanguage.GERMAN,
+        "Italian" to TranslateLanguage.ITALIAN,
+        "Chinese" to TranslateLanguage.CHINESE,
+        "Japanese" to TranslateLanguage.JAPANESE,
+        "Korean" to TranslateLanguage.KOREAN,
+        "Hindi" to TranslateLanguage.HINDI,
+        "Russian" to TranslateLanguage.RUSSIAN,
+        "Arabic" to TranslateLanguage.ARABIC
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +81,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         // Setup button listeners
         setupButtonListeners()
+
+        // Setup translate button
+        setupTranslateButton()
 
         // Character count display
         binding.editTextInput.setOnKeyListener { _, _, _ ->
@@ -204,9 +228,27 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
         // Clear button
+        // Clear button
         binding.buttonClear.setOnClickListener {
             binding.editTextInput.text.clear()
             updateCharacterCount()
+
+            // Reset the current text language to English
+            currentTextLanguage = TranslateLanguage.ENGLISH
+
+            // Optionally, also reset TTS language to default English
+            currentLanguageCode = "en-US"
+            setLanguage(currentLanguageCode)
+
+            // Update spinner to English position
+            val languageNames = binding.spinnerLanguage.adapter.count
+            for (i in 0 until languageNames) {
+                val item = binding.spinnerLanguage.getItemAtPosition(i).toString()
+                if (item.contains("English (US)")) {
+                    binding.spinnerLanguage.setSelection(i)
+                    break
+                }
+            }
         }
 
         // Paste button
@@ -224,6 +266,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             historyList.clear()
             historyAdapter.notifyDataSetChanged()
             saveHistory()
+        }
+    }
+
+    private fun setupTranslateButton() {
+        binding.buttonTranslate.setOnClickListener {
+            showTranslateDialog()
         }
     }
 
@@ -337,7 +385,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-
     private fun setLanguage(languageCode: String) {
         val locale = Locale.forLanguageTag(languageCode)
         val result = textToSpeech.setLanguage(locale)
@@ -450,23 +497,29 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun showLoadTextDialog() {
+        val options = arrayOf("Enter Text", "Upload File")
+
+        AlertDialog.Builder(this)
+            .setTitle("Load Text")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> showTextInputDialog()
+                    1 -> openFilePicker()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showTextInputDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_load_text, null)
         val alertDialog = AlertDialog.Builder(this)
-            .setTitle("Load Text")
+            .setTitle("Enter Text")
             .setView(dialogView)
             .setPositiveButton("Load") { _, _ ->
                 val editText = dialogView.findViewById<android.widget.EditText>(R.id.editTextDialogInput)
                 val text = editText.text.toString()
-
-                if (text.length > MAX_CHARACTER_LIMIT) {
-                    val truncatedText = text.substring(0, MAX_CHARACTER_LIMIT)
-                    binding.editTextInput.setText(truncatedText)
-                    Toast.makeText(this, "Text has been truncated to $MAX_CHARACTER_LIMIT characters", Toast.LENGTH_SHORT).show()
-                } else {
-                    binding.editTextInput.setText(text)
-                }
-
-                updateCharacterCount()
+                processLoadedText(text)
             }
             .setNegativeButton("Cancel", null)
             .create()
@@ -474,6 +527,152 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         alertDialog.show()
     }
 
+    private fun openFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/*"
+        }
+        startActivityForResult(intent, READ_FILE_REQUEST_CODE)
+    }
+
+    private fun processLoadedText(text: String) {
+        if (text.length > MAX_CHARACTER_LIMIT) {
+            val truncatedText = text.substring(0, MAX_CHARACTER_LIMIT)
+            binding.editTextInput.setText(truncatedText)
+            Toast.makeText(this, "Text has been truncated to $MAX_CHARACTER_LIMIT characters", Toast.LENGTH_SHORT).show()
+        } else {
+            binding.editTextInput.setText(text)
+        }
+        updateCharacterCount()
+    }
+
+
+    private var currentTextLanguage = TranslateLanguage.ENGLISH
+
+    private fun showTranslateDialog() {
+        val text = binding.editTextInput.text.toString().trim()
+
+        if (text.isEmpty()) {
+            Toast.makeText(this, "Please enter text to translate", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val languageNames = supportedLanguages.keys.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("Translate To")
+            .setItems(languageNames) { _, which ->
+                val targetLanguage = supportedLanguages[languageNames[which]] ?: TranslateLanguage.ENGLISH
+                // Don't translate if target is same as current
+                if (targetLanguage != currentTextLanguage) {
+                    translateText(text, currentTextLanguage, targetLanguage)
+                } else {
+                    Toast.makeText(this, "Text is already in this language", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun translateText(text: String, sourceLanguage: String, targetLanguage: String) {
+        // Show loading indicator
+        binding.progressBar.visibility = View.VISIBLE
+
+        // Get or create translator
+        val translatorKey = "$sourceLanguage-$targetLanguage"
+        val translator = translators.getOrPut(translatorKey) {
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(sourceLanguage)
+                .setTargetLanguage(targetLanguage)
+                .build()
+            Translation.getClient(options)
+        }
+
+        // Ensure model is downloaded
+        translator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+                // Translate text
+                translator.translate(text)
+                    .addOnSuccessListener { translatedText ->
+                        binding.editTextInput.setText(translatedText)
+                        binding.progressBar.visibility = View.GONE
+                        updateCharacterCount()
+
+                        // Update the current text language
+                        currentTextLanguage = targetLanguage
+
+                        // Update TTS language based on target language
+                        updateTTSLanguageAfterTranslation(targetLanguage)
+
+                        Toast.makeText(this, "Translation complete", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { exception ->
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(
+                            this,
+                            "Translation failed: ${exception.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+            .addOnFailureListener { exception ->
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(
+                    this,
+                    "Failed to download language model: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+    // Add this new method to map ML Kit language codes to TTS language codes and update the spinner
+    private fun updateTTSLanguageAfterTranslation(targetLanguage: String) {
+        // Map from ML Kit language code to TTS language code
+        val languageMapping = mapOf(
+            TranslateLanguage.ENGLISH to "en-US",
+            TranslateLanguage.SPANISH to "es-ES",
+            TranslateLanguage.FRENCH to "fr-FR",
+            TranslateLanguage.GERMAN to "de-DE",
+            TranslateLanguage.ITALIAN to "it-IT",
+            TranslateLanguage.CHINESE to "zh-CN",
+            TranslateLanguage.JAPANESE to "ja-JP",
+            TranslateLanguage.KOREAN to "ko-KR",
+            TranslateLanguage.HINDI to "hi-IN",
+            TranslateLanguage.RUSSIAN to "ru-RU",
+            TranslateLanguage.ARABIC to "ar"
+        )
+
+        // Get the corresponding TTS language code
+        val ttsLanguageCode = languageMapping[targetLanguage] ?: "en-US"
+        currentLanguageCode = ttsLanguageCode
+
+        // Update the spinner to match the new language
+        val languages = mapOf(
+            "English (US)" to "en-US",
+            "English (UK)" to "en-GB",
+            "Spanish" to "es-ES",
+            "French" to "fr-FR",
+            "German" to "de-DE",
+            "Italian" to "it-IT",
+            "Chinese" to "zh-CN",
+            "Japanese" to "ja-JP",
+            "Korean" to "ko-KR",
+            "Hindi" to "hi-IN",
+            "Russian" to "ru-RU",
+            "Arabic" to "ar"
+        )
+
+        // Find the position in the spinner for this language
+        val languageNames = languages.keys.toList()
+        val position = languageNames.indexOfFirst { languages[it] == ttsLanguageCode }
+
+        if (position >= 0) {
+            // Set spinner selection without triggering the listener
+            binding.spinnerLanguage.setSelection(position)
+        }
+
+        // Update TTS with the new language
+        setLanguage(ttsLanguageCode)
+    }
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val locale = Locale.US
@@ -532,6 +731,24 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == READ_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            data?.data?.let { uri ->
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val content = inputStream?.bufferedReader().use { it?.readText() ?: "" }
+                    processLoadedText(content)
+                    inputStream?.close()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error reading file: ${e.message}", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -552,10 +769,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onDestroy() {
+        // Clean up translators
+        translators.values.forEach { it.close() }
+
         if (textToSpeech.isSpeaking) {
             textToSpeech.stop()
         }
         textToSpeech.shutdown()
         super.onDestroy()
+    }
+
+    companion object {
+        private const val READ_FILE_REQUEST_CODE = 123
     }
 }

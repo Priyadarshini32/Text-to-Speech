@@ -14,299 +14,324 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-    <!-- Input Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@drawable/section_background"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/acme"
-            android:text="Text Input"
-            android:textColor="@color/primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editTextInput"
-            android:layout_width="match_parent"
-            android:layout_height="195dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/edit_text_background"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="@font/acme"
-            android:gravity="top|start"
-            android:hint="Enter text to speak"
-            android:inputType="textMultiLine"
-            android:maxLines="10"
-            android:overScrollMode="always"
-            android:padding="12dp"
-            android:scrollbars="vertical"
-            android:textColor="#FBFBFB"
-            android:textColorHint="@color/text_tertiary" />
-
-
-        <TextView
-            android:id="@+id/textViewCharacterCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/acme"
-            android:gravity="end"
-            android:text="0/1000"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
-
+        <!-- Input Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <Button
-                android:id="@+id/buttonPaste"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_accent_background"
-                android:fontFamily="@font/acme"
-                android:text="Paste"
-                android:textColor="@color/text_primary" />
-
-            <Button
-                android:id="@+id/buttonLoad"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_primary_background"
-                android:fontFamily="@font/acme"
-                android:text="Load"
-                android:textColor="@color/text_on_primary" />
-
-            <Button
-                android:id="@+id/buttonClear"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_danger_background"
-                android:fontFamily="@font/acme"
-                android:text="Clear"
-                android:textColor="@color/text_on_secondary" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Voice Settings Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@drawable/section_background"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/acme"
-            android:text="Voice Settings"
-            android:textColor="@color/primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/acme"
-            android:text="Language:"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerLanguage"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/edit_text_background" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/acme"
-            android:text="Voice:"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerVoice"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/edit_text_background" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/acme"
-            android:text="Speech Rate:"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp">
-
-            <SeekBar
-                android:id="@+id/seekBarRate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:progressTint="@color/primary"
-                android:thumbTint="@color/primary" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/section_background"
+            android:layout_marginBottom="16dp">
 
             <TextView
-                android:id="@+id/textViewRateValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1.0"
-                android:textColor="@color/text_primary"
-                android:minWidth="30dp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/acme"
-            android:text="Pitch:"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp">
-
-            <SeekBar
-                android:id="@+id/seekBarPitch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:progressTint="@color/primary"
-                android:thumbTint="@color/primary" />
-
-            <TextView
-                android:id="@+id/textViewPitchValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1.0"
-                android:textColor="@color/text_primary"
-                android:minWidth="30dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonSpeak"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_secondary_background"
                 android:fontFamily="@font/acme"
-                android:text="Speak"
-                android:textColor="@color/text_on_secondary" />
-
-            <Button
-                android:id="@+id/buttonPauseResume"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_primary_background"
-                android:enabled="false"
-                android:fontFamily="@font/acme"
-                android:text="Pause"
-                android:textColor="@color/text_on_primary" />
-
-            <Button
-                android:id="@+id/buttonStop"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_danger_background"
-                android:enabled="false"
-                android:fontFamily="@font/acme"
-                android:text="Stop"
-                android:textColor="@color/text_on_secondary" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- History Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@drawable/section_background">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="History"
-                android:textStyle="bold"
+                android:text="Text Input"
                 android:textColor="@color/primary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/buttonClearHistory"
+            <EditText
+                android:id="@+id/editTextInput"
+                android:layout_width="match_parent"
+                android:layout_height="195dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/acme"
+                android:gravity="top|start"
+                android:hint="Enter text to speak"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:overScrollMode="always"
+                android:padding="12dp"
+                android:scrollbars="vertical"
+                android:textColor="#FBFBFB"
+                android:textColorHint="@color/text_tertiary" />
+
+
+            <TextView
+                android:id="@+id/textViewCharacterCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/acme"
+                android:gravity="end"
+                android:text="0/1000"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/buttonPaste"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_accent_background"
+                    android:fontFamily="@font/acme"
+                    android:text="Paste"
+                    android:textColor="@color/text_primary" />
+
+                <Button
+                    android:id="@+id/buttonLoad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_primary_background"
+                    android:fontFamily="@font/acme"
+                    android:text="Load"
+                    android:textColor="@color/text_on_primary" />
+
+                <Button
+                    android:id="@+id/buttonClear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_danger_background"
+                    android:fontFamily="@font/acme"
+                    android:text="Clear"
+                    android:textColor="@color/text_on_secondary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/buttonTranslate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_secondary_background"
+                    android:fontFamily="@font/acme"
+                    android:text="Translate"
+                    android:textColor="@color/text_primary" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Clear"
-                android:background="@android:color/transparent"
-                android:textColor="@color/tertiary" />
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <TextView
+        <!-- Voice Settings Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recent texts (tap to load)"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/section_background"
+            android:layout_marginBottom="16dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHistory"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/acme"
+                android:text="Voice Settings"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/acme"
+                android:text="Language:"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edit_text_background" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/acme"
+                android:text="Voice:"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerVoice"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edit_text_background" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/acme"
+                android:text="Speech Rate:"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <SeekBar
+                    android:id="@+id/seekBarRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:progressTint="@color/primary"
+                    android:thumbTint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/textViewRateValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.0"
+                    android:textColor="@color/text_primary"
+                    android:minWidth="30dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/acme"
+                android:text="Pitch:"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <SeekBar
+                    android:id="@+id/seekBarPitch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:progressTint="@color/primary"
+                    android:thumbTint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/textViewPitchValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.0"
+                    android:textColor="@color/text_primary"
+                    android:minWidth="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSpeak"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_secondary_background"
+                    android:fontFamily="@font/acme"
+                    android:text="Speak"
+                    android:textColor="@color/text_on_secondary" />
+
+                <Button
+                    android:id="@+id/buttonPauseResume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_primary_background"
+                    android:enabled="false"
+                    android:fontFamily="@font/acme"
+                    android:text="Pause"
+                    android:textColor="@color/text_on_primary" />
+
+                <Button
+                    android:id="@+id/buttonStop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_danger_background"
+                    android:enabled="false"
+                    android:fontFamily="@font/acme"
+                    android:text="Stop"
+                    android:textColor="@color/text_on_secondary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- History Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/section_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="History"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/buttonClearHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clear"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/tertiary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recent texts (tap to load)"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHistory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
 </ScrollView>

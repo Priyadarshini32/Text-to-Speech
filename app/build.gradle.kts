@@ -64,6 +64,7 @@ dependencies {
 
     // Ensure Material Components are included
     implementation("com.google.android.material:material:1.11.0")
+    implementation(libs.translate)
 
     // Testing Libraries
     testImplementation(libs.junit)
